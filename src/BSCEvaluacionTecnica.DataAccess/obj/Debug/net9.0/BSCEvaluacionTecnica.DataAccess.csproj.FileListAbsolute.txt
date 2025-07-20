@@ -1,0 +1,15 @@
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\bin\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.deps.json
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\bin\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.runtimeconfig.json
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\bin\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\bin\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.pdb
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.csproj.AssemblyReference.cache
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.AssemblyInfoInputs.cache
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.AssemblyInfo.cs
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.sourcelink.json
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\refint\BSCEvaluacionTecnica.DataAccess.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.pdb
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.genruntimeconfig.cache
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\ref\BSCEvaluacionTecnica.DataAccess.dll

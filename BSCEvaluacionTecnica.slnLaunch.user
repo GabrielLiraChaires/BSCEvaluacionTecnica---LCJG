@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "src\\BSCEvaluacionTecnica.Client\\BSCEvaluacionTecnica.Client.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "src\\BSCEvaluacionTecnica.Server\\BSCEvaluacionTecnica.Server.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,115 @@
+﻿@page "/InicioAdministrador"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using CurrieTechnologies.Razor.SweetAlert2
+@using BSCEvaluacionTecnica.Shared.Extensions;
+@using BSCEvaluacionTecnica.Business.Interfaces;
+@using System.Security.Claims
+@inject AuthenticationStateProvider autenticacionProvider
+@inject NavigationManager navegacion
+@inject IAccesoService accesoService
+@inject IPermisoModulosService permisoModulosService
+@inject SweetAlertService swal
+
+@attribute [Authorize(Roles = "Administrador")]
+
+<PageTitle>Administrador - Inicio</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+
+        @if (context.User.FindFirst("Acceso")!.Value.ToString().Equals("Permitido")) // Validar que el usuario tenga acceso al sistema.
+        {
+            if (accesoModulo == 1)
+            {
+                <div class="container-fluid min-vh-100 d-flex flex-column p-4">
+                    <!-- Contenedor de Cards -->
+                    <div class="row g-4 justify-content-center align-items-center flex-grow-1">
+                        <!-- Card Administrar Usuarios -->
+                        <div class="col-12 col-lg-6">
+                            <a href="/AdministrarUsuarios" class="text-decoration-none">
+                                <div class="card border-0 shadow-lg rounded-4 h-100 transition-all" style="transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.2)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.1)'">
+                                    <div class="card-body d-flex flex-column p-5 text-center">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle p-4 mx-auto mb-4" style="width: 80px; height: 80px; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='rgba(13, 110, 253, 0.2)'" onmouseout="this.style.backgroundColor='rgba(13, 110, 253, 0.1)'">
+                                            <i class="bi bi-people-fill text-primary fs-1"></i>
+                                        </div>
+                                        <h3 class="card-title fw-bold mb-3 text-dark">Administrar Usuarios</h3>
+                                        <p class="card-text text-secondary mb-4 fs-5">
+                                            Esta opción permite crear y actualizar toda la información de los usuarios del sistema junto con sus accesos
+                                        </p>
+                                        <div class="mt-auto">
+                                            <button class="btn btn-primary btn-lg w-50 py-2 rounded-3 fw-semibold" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'" style="transition: all 0.2s ease;">
+                                                Acceder <i class="bi bi-arrow-right ms-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (accesoModulo == 2)
+            {
+                <p class="alert alert-danger">
+                    Actualmente este módulo se encuentra deshabilitado o su rol de usuario no tiene el acceso necesario.
+                </p>
+            }
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    //Acceso a el módulo.
+    int accesoModulo = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var autenticacionExt = (AutenticacionExtension)autenticacionProvider; //Crear variable para autenticación.
+            var sesion = await autenticacionExt.GetAuthenticationStateAsync(); //Obtener el estado de la autenticación actual.
+
+            if (sesion.User.Identity!.IsAuthenticated) //Si el usuario está autenticado.
+            {
+                var tokenValido = await accesoService.ValidarToken(sesion.User.FindFirst("Token")!.Value.ToString()); // Revisar si el token es válido.
+
+                if (tokenValido != null && tokenValido.Equals("Token válido")) //Si el token es válido.
+                {
+                    var acceso = await permisoModulosService.ConsultarModulosUsuario(Convert.ToInt32(sesion.User.FindFirst(ClaimTypes.NameIdentifier)?.Value)); //Consulta de módulos.
+                    if (acceso.Find(x => x.ModuloSistema!.Equals("InicioAdministrador"))!.Acceso!.Equals("Permitido")) //Si el usuario tiene acceso al módulo.
+                    {
+                        accesoModulo = 1;
+                    }
+                    else
+                    {
+                        accesoModulo = 2;
+                    }
+                }
+                else //Si no es válido mostrar mensaje de error.
+                {
+                    await swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Error",
+                        Text = tokenValido,
+                        Icon = SweetAlertIcon.Error
+                    });
+                    //Cerrar sesión y redirigir a logín.
+                    await autenticacionExt.ActualizarEstadoAutenticacion(null);
+                    navegacion.NavigateTo("/");
+                }
+            }
+            else
+            {
+                accesoModulo = 2;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al cargar la página, detalles: " + ex);
+            //Cerrar sesión y redirigir a login
+            var autenticacionExt = (AutenticacionExtension)autenticacionProvider;
+            await autenticacionExt.ActualizarEstadoAutenticacion(null);
+            navegacion.NavigateTo("/", true);
+        }
+    }
+}

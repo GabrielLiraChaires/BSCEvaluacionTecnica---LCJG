@@ -1,0 +1,6 @@
+@BSCEvaluacionTecnica.Server_HostAddress = http://localhost:5224
+
+GET {{BSCEvaluacionTecnica.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

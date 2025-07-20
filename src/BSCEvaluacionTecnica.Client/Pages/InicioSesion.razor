@@ -1,0 +1,145 @@
+﻿@page "/"
+@inject HttpClient httpCliente
+@using BSCEvaluacionTecnica.Shared.Extensions
+@using BSCEvaluacionTecnica.Shared.DTOs
+@using CurrieTechnologies.Razor.SweetAlert2
+@using Layout
+@using BSCEvaluacionTecnica.Business.Services
+@using BSCEvaluacionTecnica.Business.Interfaces
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider autenticacionProvider
+@inject NavigationManager navegacion
+@inject IAccesoService accesoService
+@inject SweetAlertService swal
+
+<PageTitle>Inicio de Sesión</PageTitle>
+
+<div class="vh-100 d-flex align-items-center justify-content-center">
+
+    <div class="card border-0 shadow-lg col-md-8 col-lg-6 col-xl-5 mx-3" style="border-radius: 20px; overflow: hidden;">
+        <div class="row g-0">
+            <!-- Columna izquierda con logo -->
+            <div class="col-md-5 d-none d-md-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #006B54, #004D3A);">
+                <div class="text-center p-4">
+                    <img src="./images/desarrollador.jpg" class="img-fluid mb-4" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;" alt="Desarrollador">
+                    <h3 class="text-white fw-bold mb-3">Empresa BSC</h3>
+                    <p class="text-white-50"><strong>Evaluación Técnica de Programación</strong></p>
+                    <p class="text-white-50">Por: José Gabriel Lira Chaires</p>
+                </div>
+            </div>
+
+            <!-- Columna derecha con formulario -->
+            <div class="col-md-7 bg-white p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <h4 class="fw-bold text-dark">Inicio de Sesión</h4>
+                    <p class="text-muted">Ingresa tus credenciales para continuar</p>
+                </div>
+
+                <EditForm Model="login" OnValidSubmit="IniciarSesion">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+
+                    <div class="mb-4 position-relative">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-end-0">
+                                <i class="bi bi-person-fill text-muted"></i>
+                            </span>
+                            <input type="text" @bind="login.Correo" class="form-control border-start-0 ps-1 py-3" placeholder="Usuario" style="border-radius: 0 10px 10px 0;" />
+                        </div>
+                        <ValidationMessage For="@(() => login.Correo)" class="text-danger small d-block mt-1"></ValidationMessage>
+                    </div>
+
+                    <div class="mb-4 position-relative">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-end-0">
+                                <i class="bi bi-lock-fill text-muted"></i>
+                            </span>
+                            <input type="password" @bind="login.Clave" class="form-control border-start-0 ps-1 py-3" placeholder="Contraseña" style="border-radius: 0 10px 10px 0;" />
+                        </div>
+                        <ValidationMessage For="@(() => login.Clave)" class="text-danger small d-block mt-1"></ValidationMessage>
+                    </div>
+
+                    <button type="submit" class="btn w-100 py-3 text-white fw-bold border-0 mb-3" style="background-color: #006B54; border-radius: 10px; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#005A48'; this.style.transform='scale(1.02)'" onmouseout="this.style.backgroundColor='#006B54'; this.style.transform='scale(1)'">
+                        Acceder
+                    </button>
+
+                    @if (mostrarAlerta)
+                    {
+                        <div class="alert alert-danger d-flex align-items-center justify-content-between p-3 mb-4" style="border-radius: 10px;">
+                            <div>
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <span class="small">@errorMessage</span>
+                            </div>
+                            <button type="button" class="btn-close" @onclick="CerrarAlerta" style="font-size: 0.7rem;"></button>
+                        </div>
+                    }
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+	private LoginDTO login = new LoginDTO();
+	private string errorMessage = string.Empty;
+	private bool mostrarAlerta = false;
+
+	private async Task IniciarSesion()
+	{
+		try
+		{
+			var loginResponse = await accesoService.Login(login);
+			if (loginResponse != null)
+			{
+				if (!string.IsNullOrEmpty(loginResponse.Token))
+				{
+					var sesionUsuario = loginResponse;
+					var autenticacionExt = (AutenticacionExtension)autenticacionProvider;
+
+					//Validar si tiene acceso al sistema.
+					if (sesionUsuario.Acceso.Equals("Permitido"))
+					{
+						await autenticacionExt.ActualizarEstadoAutenticacion(sesionUsuario);
+						//Enviar a pestaña Home dependiendo del rol logeado.
+						switch (sesionUsuario.Rol)
+						{
+							case "Administrador":
+								{
+									navegacion.NavigateTo("/InicioAdministrador");
+								}
+								break;
+							case "Personal Administrativo":
+								{
+									navegacion.NavigateTo("/InicioPersonalAdministrativo");
+								}
+								break;
+							case "Vendedores":
+								{
+									navegacion.NavigateTo("/InicioVendedores");
+								}
+								break;
+						}
+					}
+					else
+					{
+						await swal.FireAsync(new SweetAlertOptions
+						{
+							Title = "¡Atención!",
+							Text = "Acceso denegado al sistema.",
+							Icon = SweetAlertIcon.Info
+						});
+					}
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			errorMessage = ex.Message + " ";
+			mostrarAlerta = true;
+		}
+	}
+	private void CerrarAlerta()
+	{
+		mostrarAlerta = false; // Oculta la alerta.
+		errorMessage = string.Empty; // Limpia el mensaje de error.
+	}
+}

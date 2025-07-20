@@ -1,0 +1,75 @@
+﻿@inherits LayoutComponentBase
+@using BSCEvaluacionTecnica.Shared.Extensions;
+@using Microsoft.AspNetCore.Components.Authorization
+@using CurrieTechnologies.Razor.SweetAlert2
+@inject AuthenticationStateProvider autenticacionProvider
+@inject NavigationManager navManager
+@inject SweetAlertService swal
+
+<CascadingAuthenticationState>
+    <div class="page d-flex">
+        @* Sidebar solo para usuarios autenticados *@
+        <AuthorizeView>
+            <Authorized>
+                <div class="sidebar">
+                    <NavMenu />
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <main class="flex-fill">
+            @* Header superior con usuario y botón de cerrar sesión *@
+            <AuthorizeView Context="auth">
+                <Authorized>
+                    <div class="top-row px-4 py-2 d-flex flex-column flex-lg-row flex-wrap justify-content-between align-items-center" style="background-color: #E0E0E0;">
+                        <!-- Título -->
+                        <div class="d-flex align-items-center mb-2 mb-lg-0">
+                            <span class="fs-5 fw-bold colorLetraVerde ms-2"></span>
+                        </div>
+
+                        <!-- Nombre de usuario y botón de logout -->
+                        <div class="d-flex align-items-center ms-lg-3">
+                            <span class="me-3">
+                                Bienvenido
+                                @($"{auth.User.FindFirst("Nombre")?.Value} {auth.User.FindFirst("ApellidoPaterno")?.Value}")
+                            </span>
+                            <button class="btn btn-outline-danger btn-sm"
+                                    @onclick="CerrarSesion">
+                                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                            </button>
+                        </div>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+
+            <article class="content p-4">
+                @Body
+            </article>
+        </main>
+    </div>
+</CascadingAuthenticationState>
+@code {
+    private async Task CerrarSesion()
+    {
+        var result = await swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "¡Confirmación!",
+            Text = "¿Estás seguro de que deseas cerrar la sesión?",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Sí, cerrar sesión",
+            CancelButtonText = "Cancelar"
+        });
+
+        if (result.IsConfirmed)
+        {
+            // El usuario confirmó, cerramos sesión.
+            if (autenticacionProvider is AutenticacionExtension authExt)
+            {
+                await authExt.ActualizarEstadoAutenticacion(null);
+                navManager.NavigateTo("/", true);
+            }
+        }
+    }
+
+}

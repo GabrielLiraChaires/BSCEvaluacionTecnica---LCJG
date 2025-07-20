@@ -1,0 +1,13 @@
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\bin\Debug\net9.0\BSCEvaluacionTecnica.Shared.deps.json
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\bin\Debug\net9.0\BSCEvaluacionTecnica.Shared.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\bin\Debug\net9.0\BSCEvaluacionTecnica.Shared.pdb
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.csproj.AssemblyReference.cache
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.AssemblyInfoInputs.cache
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.AssemblyInfo.cs
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.csproj.CoreCompileInputs.cache
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.sourcelink.json
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\refint\BSCEvaluacionTecnica.Shared.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\BSCEvaluacionTecnica.Shared.pdb
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Shared\obj\Debug\net9.0\ref\BSCEvaluacionTecnica.Shared.dll

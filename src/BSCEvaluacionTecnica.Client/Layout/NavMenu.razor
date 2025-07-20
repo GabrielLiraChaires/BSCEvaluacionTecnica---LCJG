@@ -1,0 +1,107 @@
+﻿@*Referencias para autorización*@
+@using Microsoft.AspNetCore.Components.Authorization
+
+<style>
+    .nav-link {
+        display: flex;
+        align-items: center;
+    }
+
+        .nav-link i {
+            font-size: 1.25rem;
+            margin-right: 0.5rem;
+            line-height: 1; /* Añade esta línea */
+            vertical-align: middle; /* Añade esta línea */
+        }
+
+        .nav-link span {
+            line-height: 1.5; /* Asegura que el texto tenga el mismo line-height */
+            display: inline-flex; /* Cambia a inline-flex para mejor alineación */
+            align-items: center; /* Alinea verticalmente */
+        }
+
+    .nav-scrollable {
+        overflow-y: auto;
+        height: calc(100vh - 56px);
+    }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+@* Menú para aspirantes registrados *@
+<AuthorizeView Roles="Administrador">
+    <Authorized>
+        <div class="top-row ps-3 navbar navbar-dark" style="background-color: rgba(0, 69, 58, 1);">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="">Menú Principal</a>
+                <button class="navbar-toggler" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+        <div class="@NavMenuCssClass nav-scrollable" style="background-color: rgba(0, 107, 84, 1);" @onclick="ToggleNavMenu">
+            <nav class="flex-column">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/InicioAdministrador">
+                        <i class="ms-3 bi bi-list"></i> <span>Inicio</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/AdministrarUsuarios">
+                        <i class="ms-3 bi bi-clipboard-data-fill"></i> <span>Administrar Usuarios</span>
+                    </NavLink>
+                </div>
+            </nav>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@* Personal Administrativo *@
+<AuthorizeView Roles="Personal Administrativo">
+    <Authorized>
+        <div class="@NavMenuCssClass nav-scrollable" style="background-color: rgba(0, 107, 84, 1);" @onclick="ToggleNavMenu">
+            <nav class="flex-column">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link text-white" href="/RegistrarProductos">
+                        <i class="bi bi-box-seam"></i><span>Registrar Productos</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link text-white" href="/ReporteExistencias">
+                        <i class="bi bi-bar-chart"></i><span>Reporte Existencias</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link text-white" href="/ConsultarPedidos">
+                        <i class="bi bi-card-list"></i><span>Consultar Pedidos</span>
+                    </NavLink>
+                </div>
+            </nav>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@* Vendedores *@
+<AuthorizeView Roles="Vendedores">
+    <Authorized>
+        <div class="@NavMenuCssClass nav-scrollable" style="background-color: rgba(0, 107, 84, 1);" @onclick="ToggleNavMenu">
+            <nav class="flex-column">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link text-white" href="/ColocarPedido">
+                        <i class="bi bi-cart-plus"></i><span>Colocar Pedido</span>
+                    </NavLink>
+                </div>
+            </nav>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
