@@ -10,7 +10,7 @@ namespace BSCEvaluacionTecnica.DataAccess.Entities;
 public partial class Producto
 {
     [Key]
-    public int Id { get; set; }
+    public string Clave { get; set; }
 
     [StringLength(100)]
     public string Nombre { get; set; } = null!;

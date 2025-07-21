@@ -28,6 +28,10 @@ builder.Services.AddScoped<IAccesoService, AccesoService>();
 builder.Services.AddScoped<IPermisoModulosService, PermisoModulosService>();
 //IPermisoModulosService.
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+//IPermisoModulosService.
+builder.Services.AddScoped<IProductoService, ProductoService>();
+//IPermisoModulosService.
+builder.Services.AddScoped<IPedidosService, PedidosService>();
 
 //SweetAlert.
 builder.Services.AddSweetAlert2();

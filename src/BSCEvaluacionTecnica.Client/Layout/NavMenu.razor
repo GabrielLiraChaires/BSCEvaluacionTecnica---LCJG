@@ -30,15 +30,15 @@
 @* Menú para aspirantes registrados *@
 <AuthorizeView Roles="Administrador">
     <Authorized>
-        <div class="top-row ps-3 navbar navbar-dark" style="background-color: rgba(0, 69, 58, 1);">
+        <div class="top-row ps-3 navbar navbar-dark" style="background-color: #252A47">
             <div class="container-fluid">
-                <a class="navbar-brand" href="">Menú Principal</a>
+                <a class="navbar-brand" href="/InicioAdministrador">Menú Principal</a>
                 <button class="navbar-toggler" @onclick="ToggleNavMenu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
         </div>
-        <div class="@NavMenuCssClass nav-scrollable" style="background-color: rgba(0, 107, 84, 1);" @onclick="ToggleNavMenu">
+        <div class="@NavMenuCssClass nav-scrollable" style="background-color: #2D3250" @onclick="ToggleNavMenu">
             <nav class="flex-column">
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="/InicioAdministrador">
@@ -58,21 +58,29 @@
 @* Personal Administrativo *@
 <AuthorizeView Roles="Personal Administrativo">
     <Authorized>
-        <div class="@NavMenuCssClass nav-scrollable" style="background-color: rgba(0, 107, 84, 1);" @onclick="ToggleNavMenu">
+        <div class="top-row ps-3 navbar navbar-dark" style="background-color: #252A47">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/InicioPersonalAdministrativo">Menú Principal</a>
+                <button class="navbar-toggler" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+        <div class="@NavMenuCssClass nav-scrollable" style="background-color: #2D3250" @onclick="ToggleNavMenu">
             <nav class="flex-column">
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link text-white" href="/RegistrarProductos">
-                        <i class="bi bi-box-seam"></i><span>Registrar Productos</span>
+                    <NavLink class="nav-link" href="/InicioPersonalAdministrativo">
+                        <i class="ms-3 bi bi-list"></i> <span>Inicio</span>
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link text-white" href="/ReporteExistencias">
-                        <i class="bi bi-bar-chart"></i><span>Reporte Existencias</span>
+                    <NavLink class="nav-link" href="/AdministrarProductosPersonalAdministrativo">
+                        <i class="ms-3 bi bi-clipboard-data-fill"></i> <span>Productos</span>
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link text-white" href="/ConsultarPedidos">
-                        <i class="bi bi-card-list"></i><span>Consultar Pedidos</span>
+                    <NavLink class="nav-link" href="/PedidosPersonalAdministrativo">
+                        <i class="ms-3 bi bi-cart-check"></i> <span>Pedidos</span>
                     </NavLink>
                 </div>
             </nav>
@@ -81,13 +89,26 @@
 </AuthorizeView>
 
 @* Vendedores *@
-<AuthorizeView Roles="Vendedores">
+<AuthorizeView Roles="Vendedor">
     <Authorized>
-        <div class="@NavMenuCssClass nav-scrollable" style="background-color: rgba(0, 107, 84, 1);" @onclick="ToggleNavMenu">
+        <div class="top-row ps-3 navbar navbar-dark" style="background-color: #252A47">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/InicioVendedor">Menú Principal</a>
+                <button class="navbar-toggler" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+        <div class="@NavMenuCssClass nav-scrollable" style="background-color: #2D3250" @onclick="ToggleNavMenu">
             <nav class="flex-column">
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link text-white" href="/ColocarPedido">
-                        <i class="bi bi-cart-plus"></i><span>Colocar Pedido</span>
+                    <NavLink class="nav-link" href="/InicioVendedor">
+                        <i class="ms-3 bi bi-list"></i> <span>Inicio</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/PedidosVendedor">
+                        <i class="ms-3 bi bi-cart-check"></i> <span>Realizar Pedidos</span>
                     </NavLink>
                 </div>
             </nav>

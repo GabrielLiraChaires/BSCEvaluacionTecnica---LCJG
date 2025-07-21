@@ -10,5 +10,7 @@ namespace BSCEvaluacionTecnica.Business.Interfaces
     public interface IUsuarioService
     {
         Task<List<UsuarioDTO>> Consultar();
+        Task<ResponseAPI<UsuarioDTO>> Guardar(UsuarioDTO usuario);
+        Task<ResponseAPI<UsuarioDTO>> Actualizar(UsuarioDTO usuario);
     }
 }

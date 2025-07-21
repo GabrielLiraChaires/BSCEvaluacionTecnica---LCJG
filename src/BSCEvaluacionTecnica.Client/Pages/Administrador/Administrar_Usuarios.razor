@@ -22,6 +22,19 @@
         color: white;
         background-color: #2c2f4a;
     }
+
+    .busqueda, .busqueda::placeholder {
+        background-color: #9FA5C9;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+        .busqueda:focus {
+            outline: none; /* Evita el sombreado azul o resaltado */
+            box-shadow: none; /* Evita el borde adicional */
+            border: none; /* Asegura que no aparezca un borde */
+        }
 </style>
 
 <AuthorizeView>
@@ -33,11 +46,23 @@
             {
                 <div class="container-fluid px-0 p-2" style="min-height: 100vh; display: flex; flex-direction: column;">
                     <!-- Tabla de Usuarios -->
-                    <div class="d-flex justify-content-end mb-3">
-                        <button class="btn btn-success d-flex align-items-center" style="border-radius: 10px; padding: 0.5rem 1rem;" @onclick="NuevoUsuario">
-                            <i class="bi bi-plus-circle me-1"></i>
-                            <span>Nuevo Usuario</span>
-                        </button>
+                    <div class="row w-100 mx-0 mb-3">
+                        <div class="col-12 col-lg-9 mb-3 mb-lg-0">
+                            <div class="d-flex align-items-center">
+                                <div class="input-group w-100">
+                                    <InputText class="busqueda form-control" style="background-color: #9FA5C9; color:white;" placeholder="Buscar por Nombre, Correo o Rol" @bind-Value="textoBusqueda" @oninput="Filtrar" />
+                                    <button class="busqueda btn btn-outline-secondary ml-2" type="button" @onclick="LimpiarFiltro">
+                                        <i class="bi bi-pencil"></i> Limpiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Botón NUEVO -->
+                        <div class="col-12 col-lg-3 d-flex justify-content-end align-items-center">
+                            <button type="submit" class="btn btn-primary btn-sm" style="padding: 0.375rem 0.75rem; background-color: #424769; color:white; border:none; white-space:nowrap;" @onclick="NuevoUsuario">
+                                <i class="bi bi-plus-circle"></i> Nuevo
+                            </button>
+                        </div>
                     </div>
                     <div class="row w-100">
                         @if (usuarios?.Count() == 0 || usuarios == null)
@@ -83,7 +108,7 @@
                                                         <td class="align-middle">@item.Rol</td>
                                                         <td class="align-middle pe-4">
                                                             <div class="d-flex justify-content-center gap-2">
-                                                                <button class="btn btn-warning btn-sm d-flex align-items-center text-white px-3" @onclick="(() => SeleccionarUsuario(item, 1))">
+                                                                <button class="btn btn-warning btn-sm d-flex align-items-center text-white px-3" @onclick="(() => SeleccionarUsuario(item))">
                                                                     <i class="bi bi-pencil me-2"></i>
                                                                     <span>Editar</span>
                                                                 </button>
@@ -103,13 +128,13 @@
 					<div class="modal fade" id="modalEdicion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalDocumento" aria-hidden="true">
 						<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable 0">
 							<div class="modal-content">
-                                <div class="modal-header text-white" style="background-color:#9FA5C9;">
+                                <div class="modal-header text-white" style="background-color:#2D3250;">
                                     <p class="modal-title">
                                         <strong>@(edicion ? $"Edición del usuario {usuario.Nombre}" : "Nuevo Usuario")</strong>
                                     </p>
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-								<div class="modal-body colorBlancoMedioFondo">
+								<div class="modal-body">
                                     <EditForm Model="usuario" OnValidSubmit="GuardarActualizarUsuario" Context="Formulario">
                                         <DataAnnotationsValidator />
                                         <div class="modal-body">
@@ -126,17 +151,26 @@
                                                     <InputText class="form-control" style="background-color: #9FA5C9; color:white;" @bind-Value="usuario.Correo" />
                                                     <ValidationMessage For="@(() => usuario.Correo)" />
                                                 </div>
+                                            </div>
+                                            <div class="row mb-2">
                                                 <div class="col-6">
                                                     <label for="inputText" class="form-label"><strong>Clave</strong></label>
-                                                    <InputText class="form-control" style="background-color: #9FA5C9; color:white;" @bind-Value="usuario.Clave"/>
-                                                    @if (edicion)
-                                                    {
+                                                    <InputText class="form-control" style="background-color: #9FA5C9; color:white;" @bind-Value="usuario.Clave" />
+                                                    <ValidationMessage For="@(() => usuario.Clave)" />
+                                                </div>
+                                                <div class="col-6">
+                                                    <label for="inputText" class="form-label"><strong>Confirmación de la Clave</strong></label>
+                                                    <InputText class="form-control" style="background-color: #9FA5C9; color:white;" @bind-Value="usuario.ClaveConfirmacion" />
+                                                    <ValidationMessage For="@(() => usuario.ClaveConfirmacion)" />
+                                                </div>
+                                                @if (edicion)
+                                                {
+                                                    <div class="col-12">
                                                         <div class="form-text" style="color:rgba(179, 179, 179, 1);">
                                                             Por motivos de seguridad, la contraseña actual no se muestra. Por favor, ingrese una nueva si asi lo decea.
                                                         </div>
-                                                    }
-                                                    <ValidationMessage For="@(() => usuario.Clave)" />
-                                                </div>
+                                                    </div>
+                                                }
                                             </div>
                                             <div class="row mb-2">
                                                 @if(!edicion)
@@ -200,6 +234,8 @@
     List<UsuarioDTO>? usuarios = new List<UsuarioDTO>();
     List<UsuarioDTO>? usuariosFiltrados = new List<UsuarioDTO>();
     UsuarioDTO? usuario = new UsuarioDTO();
+    //Barra de busqueda
+    string textoBusqueda = string.Empty;
     bool edicion = false;
 
     protected override async Task OnInitializedAsync()
@@ -258,28 +294,20 @@
     }
 
     #region "Seleccionar y administrar usuarios"
-    private async void SeleccionarUsuario(UsuarioDTO usuarioSeleccionado, int caso)
+    private async void SeleccionarUsuario(UsuarioDTO usuarioSeleccionado)
     {
         //Validar cuando el usuario seleccione editar al usuario.
-        if (caso==1)
+        edicion = true;
+        usuario = new UsuarioDTO
         {
-            edicion = true;
-            usuario = new UsuarioDTO
-            {
-                Id = usuarioSeleccionado.Id,
-                Nombre= usuarioSeleccionado.Nombre,
-                Correo=usuarioSeleccionado.Correo,
-                Rol=usuarioSeleccionado.Rol,
-                Edicion=true
-            };
-            StateHasChanged();
-            await JS.InvokeVoidAsync("abrirModal", "modalEdicion");
-        }
-        //Validar cuando el usuario seleccione administrar los accesos.
-        else if(caso==2)
-        {
-            await JS.InvokeVoidAsync("abrirModal", "modalAdministracion");
-        }
+            Id = usuarioSeleccionado.Id,
+            Nombre = usuarioSeleccionado.Nombre,
+            Correo = usuarioSeleccionado.Correo,
+            Rol = usuarioSeleccionado.Rol,
+            Edicion = true
+        };
+        StateHasChanged();
+        await JS.InvokeVoidAsync("abrirModal", "modalEdicion");
     }
     private async void NuevoUsuario()
     {
@@ -291,9 +319,129 @@
         StateHasChanged();
         await JS.InvokeVoidAsync("abrirModal", "modalEdicion");
     }
+    private void Filtrar(ChangeEventArgs e)
+    {
+        textoBusqueda = e.Value?.ToString() ?? "";
+        if (string.IsNullOrWhiteSpace(textoBusqueda))
+        {
+            usuariosFiltrados = usuarios;
+        }
+        else
+        {
+            usuariosFiltrados = usuarios?.Where(v =>
+                v.Nombre.Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase) ||
+                v.Correo.Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase) ||
+                v.Rol.Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+        }
+    }
+    private void LimpiarFiltro()
+    {
+        textoBusqueda = string.Empty;
+        usuariosFiltrados = usuarios;
+    }
     private async Task GuardarActualizarUsuario()
     {
-        
+        var autenticacionExt = (AutenticacionExtension)autenticacionProvider; //Crear variable para la autentificación.
+        var sesion = await autenticacionExt.GetAuthenticationStateAsync();
+        var tokenValido = await accesoService.ValidarToken(sesion.User.FindFirst("Token")!.Value.ToString()); //Revisar si el token es valido.
+
+        if (tokenValido != null && tokenValido.Equals("Token válido"))
+        {
+            try
+            {
+                var resultado = await swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Confirmación",
+                    Text = $"¿Estás seguro de que deseas {(edicion ? "actualizar" : "guardar")} este usuario?",
+                    Icon = SweetAlertIcon.Question,
+                    ShowCancelButton = true,
+                    ConfirmButtonText = "Sí",
+                    CancelButtonText = "No"
+                });
+                if (resultado.IsConfirmed)
+                {
+                    if (edicion)
+                    {
+                        var respuesta = await usuarioService.Actualizar(usuario);
+                        if (respuesta.EsCorrecto)
+                        {
+                            usuarios.First(x => x.Id == respuesta.Valor.Id).Nombre = respuesta.Valor.Nombre;
+                            usuarios.First(x => x.Id == respuesta.Valor.Id).Correo = respuesta.Valor.Correo;
+                            usuarios.First(x => x.Id == respuesta.Valor.Id).Rol = respuesta.Valor.Rol;
+                            usuariosFiltrados = usuarios;
+                            usuario = new UsuarioDTO();
+                            StateHasChanged();
+
+                            await swal.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "¡Éxito!",
+                                Text = respuesta.Mensaje,
+                                Icon = SweetAlertIcon.Success
+                            });
+                            await JS.InvokeVoidAsync("minimizarModal", "modalEdicion");
+                        }
+                        else
+                        {
+                            await swal.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "¡Error!",
+                                Text = respuesta.Mensaje,
+                                Icon = SweetAlertIcon.Error
+                            });
+                        }
+                    }
+                    else
+                    {
+                        var respuesta = await usuarioService.Guardar(usuario);
+                        if (respuesta.EsCorrecto)
+                        {
+                            usuarios.Add(respuesta.Valor);
+                            usuariosFiltrados = usuarios;
+                            usuario = new UsuarioDTO();
+                            StateHasChanged();
+
+                            await swal.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "¡Éxito!",
+                                Text = respuesta.Mensaje,
+                                Icon = SweetAlertIcon.Success
+                            });
+                            await JS.InvokeVoidAsync("minimizarModal", "modalEdicion");
+                        }
+                        else
+                        {
+                            await swal.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "¡Error!",
+                                Text = respuesta.Mensaje,
+                                Icon = SweetAlertIcon.Error
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                await swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Error!",
+                    Text = $"Ocurrio un error al {(edicion ? "actualizar" : "guardar")} este usuario, intenta nuevamente.",
+                    Icon = SweetAlertIcon.Error
+                });
+            }
+        }
+        else
+        {
+            await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Error",
+                Text = tokenValido,
+                Icon = SweetAlertIcon.Error
+            });
+            //Cerrar sesión y redirigir a logín.
+            await autenticacionExt.ActualizarEstadoAutenticacion(null);
+        }
     }
     #endregion
 }

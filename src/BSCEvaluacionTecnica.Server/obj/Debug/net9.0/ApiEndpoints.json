@@ -32,6 +32,58 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.PedidoController",
+    "Method": "Consultar",
+    "RelativePath": "api/Pedido/Consultar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.PedidoController",
+    "Method": "ConsultarVendedor",
+    "RelativePath": "api/Pedido/ConsultarVendedor/{vendedor}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "vendedor",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.PedidoController",
+    "Method": "Guardar",
+    "RelativePath": "api/Pedido/Guardar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "pedido",
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.RegistroPedidosDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.ResponseAPI\u00601[[System.Collections.Generic.List\u00601[[BSCEvaluacionTecnica.Shared.DTOs.RegistroPedidosDTO, BSCEvaluacionTecnica.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.PermisoModulosController",
     "Method": "ConsultarModulosUsuario",
     "RelativePath": "api/PermisoModulos/ConsultarModulosUsuario/{id}",
@@ -48,6 +100,94 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.ProductoController",
+    "Method": "Actualizar",
+    "RelativePath": "api/Producto/Actualizar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productoDTO",
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.ProductoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.ResponseAPI\u00601[[BSCEvaluacionTecnica.Shared.DTOs.ProductoDTO, BSCEvaluacionTecnica.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.ProductoController",
+    "Method": "Consultar",
+    "RelativePath": "api/Producto/Consultar",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.ProductoController",
+    "Method": "Guardar",
+    "RelativePath": "api/Producto/Guardar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productoDTO",
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.ProductoDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.ResponseAPI\u00601[[BSCEvaluacionTecnica.Shared.DTOs.ProductoDTO, BSCEvaluacionTecnica.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.UsuarioController",
+    "Method": "Actualizar",
+    "RelativePath": "api/Usuario/Actualizar",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioDTO",
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.UsuarioDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.ResponseAPI\u00601[[BSCEvaluacionTecnica.Shared.DTOs.UsuarioDTO, BSCEvaluacionTecnica.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.UsuarioController",
     "Method": "Consultar",
     "RelativePath": "api/Usuario/Consultar",
@@ -56,5 +196,31 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.UsuarioController",
+    "Method": "Guardar",
+    "RelativePath": "api/Usuario/Guardar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioDTO",
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.UsuarioDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.ResponseAPI\u00601[[BSCEvaluacionTecnica.Shared.DTOs.UsuarioDTO, BSCEvaluacionTecnica.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

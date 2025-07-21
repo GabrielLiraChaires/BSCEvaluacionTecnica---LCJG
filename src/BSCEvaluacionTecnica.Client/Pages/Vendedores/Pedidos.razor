@@ -1,0 +1,745 @@
+﻿@page "/PedidosVendedor"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using CurrieTechnologies.Razor.SweetAlert2
+@using BSCEvaluacionTecnica.Shared.Extensions;
+@using BSCEvaluacionTecnica.Business.Interfaces;
+@using System.Security.Claims
+@using BSCEvaluacionTecnica.Shared.DTOs;
+@inject AuthenticationStateProvider autenticacionProvider
+@inject NavigationManager navegacion
+@inject IAccesoService accesoService
+@inject IPermisoModulosService permisoModulosService
+@inject IPedidosService pedidosService
+@inject IProductoService productoService
+@inject SweetAlertService swal
+
+@attribute [Authorize(Roles = "Vendedor")]
+
+<PageTitle>Pedidos - Vendedor</PageTitle>
+
+<style>
+    option {
+        color: white;
+        background-color: #2c2f4a;
+    }
+
+    .busqueda, .busqueda::placeholder {
+        background-color: #9FA5C9;
+        color: white;
+        border: none;
+        border-radius: 5px;
+    }
+
+        .busqueda:focus {
+            outline: none; /* Evita el sombreado azul o resaltado */
+            box-shadow: none; /* Evita el borde adicional */
+            border: none; /* Asegura que no aparezca un borde */
+        }
+
+    .filaTabla {
+        cursor: pointer; /* Cambia el cursor a un puntero */
+        transition: background-color 0.3s; /* Transición suave al cambiar el fondo */
+    }
+
+        .filaTabla:hover {
+            background-color: #676F9D !important; /* Color de fondo al pasar el mouse */
+            color: white;
+        }
+</style>
+
+<AuthorizeView>
+    <Authorized>
+
+        @if (context.User.FindFirst("Acceso")!.Value.ToString().Equals("Permitido")) // Validar que el usuario tenga acceso al sistema.
+        {
+            if (accesoModulo == 1)
+            {
+                <div class="container-fluid px-0 p-2" style="min-height: 100vh; display: flex; flex-direction: column;">
+                    <!-- Tabla de Pedidos -->
+                    <div class="row w-100 mx-0 mb-3">
+                        <div class="col-12 col-lg-9 mb-3 mb-lg-0">
+                            <div class="d-flex align-items-center">
+                                <div class="input-group w-100">
+                                    <InputText class="busqueda form-control" style="background-color: #9FA5C9; color:white;" placeholder="Buscar por Fecha, Vendedor o Cliente" @bind-Value="textoBusqueda" @oninput="Filtrar" />
+                                    <button class="busqueda btn btn-outline-secondary ml-2" type="button" @onclick="LimpiarFiltro">
+                                        <i class="bi bi-pencil"></i> Limpiar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Botón NUEVO -->
+                        <div class="col-12 col-lg-3 d-flex justify-content-end align-items-center">
+                            <button type="submit" class="btn btn-primary btn-sm" style="padding: 0.375rem 0.75rem; background-color: #424769; color:white; border:none; white-space:nowrap;" @onclick="NuevoPedido">
+                                <i class="bi bi-plus-circle"></i> Nuevo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row w-100">
+                        @if (pedidos?.Count() == 0 || pedidos == null)
+                        {
+                            <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
+                                <div>
+                                    <i class="bi bi-database-fill-x me-2"></i>
+                                    No se cuenta con productos registrados.
+                                </div>
+                            </div>
+                        }
+                        else if (pedidosFiltrados?.Count() == 0 || pedidosFiltrados == null)
+                        {
+                            <div class="alert alert-info d-flex align-items-center justify-content-center" role="alert">
+                                <div>
+                                    <i class="bi bi-database-fill-x me-2"></i>
+                                    No se encontraron coincidencias.
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row mx-0">
+                                <div class="table-responsive rounded-3 shadow" style="max-height: 800px;">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="sticky-top" style="background: linear-gradient(135deg, #2D3250 0%, #424769 100%)">
+                                            <tr class="text-center">
+                                                <th class="align-middle py-3 text-black fw-semibold ps-4">Cliente</th>
+                                                <th class="align-middle py-3 text-black fw-semibold">Fecha y Hora</th>
+                                                <th class="align-middle py-3 text-black fw-semibold">Vendedor</th>
+                                                <th class="align-middle py-3 text-black fw-semibold pe-4">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int rowIndex = 0;
+                                                foreach (var item in pedidosFiltrados!)
+                                                {
+                                                    string rowClass = rowIndex % 2 == 0 ? "bg-light" : "bg-white";
+                                                    <tr class="text-center @rowClass border-bottom border-secondary">
+                                                        <td class="text-start align-middle ps-4">@item.Pedido.Cliente</td>
+                                                        <td class="align-middle">
+                                                            @item.Pedido.FechaHora.ToString("dd/MM/yyyy HH:mm")
+                                                        </td>
+                                                        <td class="align-middle">
+                                                            <div class="fw-semibold">@item.Pedido.Vendedor.Nombre</div>
+                                                            <div class="text-muted small d-flex align-items-center justify-content-center">
+                                                                <i class="bi bi-envelope-fill me-1"></i>
+                                                                @item.Pedido.Vendedor.Correo
+                                                            </div>
+                                                        </td>
+                                                        <td class="align-middle pe-4">
+                                                            <div class="d-flex justify-content-center gap-2">
+                                                                <button class="btn btn-info btn-sm d-flex align-items-center text-white px-3" @onclick="(() => SeleccionarPedido(item))">
+                                                                    <i class="bi bi-pencil me-2"></i>
+                                                                    <span>Ver Detalles</span>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    rowIndex++;
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- Modal detalles de pedidos -->
+                    @if (registrosPedido?.Pedido != null)
+                    {
+                        <div class="modal fade" id="modalDetalles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalDocumento" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable 0">
+                                <div class="modal-content">
+                                    <div class="modal-header text-white" style="background-color:#2D3250;">
+                                        <p class="modal-title">
+                                            <strong>@($"Detalles del pedido {registrosPedido.Pedido.Id} del dia {registrosPedido.Pedido.FechaHora.ToString("dd/MM/yyyy HH:mm")}")</strong>
+                                        </p>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        @if (registrosPedido.Detalles?.Count() == 0 || registrosPedido.Detalles == null)
+                                        {
+                                            <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
+                                                <div>
+                                                    <i class="bi bi-database-fill-x me-2"></i>
+                                                    Este pedido no cuenta con detalles los cuales mostrar.
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="row mx-0 mb-3">
+                                                <div class="table-responsive rounded-3 shadow" style="max-height: 800px;">
+                                                    <table class="table table-hover mb-0">
+                                                        <thead class="sticky-top" style="background: linear-gradient(135deg, #2D3250 0%, #424769 100%)">
+                                                            <tr class="text-center">
+                                                                <th class="align-middle py-3 text-black fw-semibold ps-4">Producto</th>
+                                                                <th class="align-middle py-3 text-black fw-semibold">Cantidad</th>
+                                                                <th class="align-middle py-3 text-black fw-semibold">Subtotal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                int rowIndex = 0;
+                                                                foreach (var item in registrosPedido.Detalles!)
+                                                                {
+                                                                    string rowClass = rowIndex % 2 == 0 ? "bg-light" : "bg-white";
+                                                                    <tr class="text-center @rowClass border-bottom border-secondary">
+                                                                        <td class="text-start ps-4 align-middle">
+                                                                            <div class="fw-semibold">@item.Producto.Nombre</div>
+                                                                            <div class="text-muted" style="font-size: .875rem;">
+                                                                                Costo: $@item.Producto.CostoUnidad.ToString().Replace(",", ".")
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="align-middle">@item.Cantidad</td>
+                                                                        <td class="align-middle">$@item.SubTotal.ToString().Replace(",", ".")</td>
+                                                                    </tr>
+                                                                    rowIndex++;
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p><strong>Total: </strong>$@(registrosPedido.Detalles.Select(x => x.SubTotal).Sum().ToString().Replace(",", "."))</p>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <!-- Modal de guardado de pedidos -->
+                    <div class="modal fade" id="modalPedido" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalDocumento" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable 0">
+                            <div class="modal-content">
+                                <div class="modal-header text-white" style="background-color:#2D3250;">
+                                    <p class="modal-title">
+                                        <strong>Registrar Pedido</strong>
+                                    </p>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <EditForm Model="pedido" OnValidSubmit="GuardarPedido" Context="Formulario">
+                                        <DataAnnotationsValidator />
+                                        <div class="modal-body">
+                                            <div class="row mb-4">
+                                                <div class="col-12">
+                                                    <label for="inputText" class="form-label"><strong>Nombre del Cliente</strong></label>
+                                                    <InputText class="form-control" style="background-color: #9FA5C9; color:white;" @bind-Value="pedido.Cliente" />
+                                                    <ValidationMessage For="@(() => pedido.Cliente)" />
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-primary btn-sm float-end" style="padding: 0.375rem 0.75rem; background-color: #424769; color:white; border:none; white-space:nowrap;" data-bs-toggle="modal" data-bs-target="#modalProductos">
+                                                        <i class="bi bi-plus-circle"></i> Agregar Producto
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                @if (detallesPedido?.Count() == 0 || detallesPedido == null)
+                                                {
+                                                    <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
+                                                        <div>
+                                                            <i class="bi bi-database-fill-x me-2"></i>
+                                                            No se cuenta con productos seleccionados.
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="table-responsive rounded-3 shadow" style="max-height: 800px;">
+                                                        <table class="table table-hover mb-0">
+                                                            <thead class="sticky-top" style="background: linear-gradient(135deg, #2D3250 0%, #424769 100%)">
+                                                                <tr class="text-center">
+                                                                    <th class="align-middle py-3 text-black fw-semibold ps-4">Clave de Producto</th>
+                                                                    <th class="align-middle py-3 text-black fw-semibold">Nombre</th>
+                                                                    <th class="align-middle py-3 text-black fw-semibold">Unidades</th>
+                                                                    <th class="align-middle py-3 text-black fw-semibold">Costo por Unidad</th>
+                                                                    <th class="align-middle py-3 text-black fw-semibold">Subtotal</th>
+                                                                    <th class="align-middle py-3 text-black fw-semibold">Acciones</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @{
+                                                                    int rowIndex = 0;
+                                                                    foreach (var item in detallesPedido!)
+                                                                    {
+                                                                        string rowClass = rowIndex % 2 == 0 ? "bg-light" : "bg-white";
+                                                                        <tr class="text-center @rowClass border-bottom border-secondary">
+                                                                            <td class="align-middle">@item.FKClaveProducto</td>
+                                                                            <td class="text-start align-middle ps-4">@item.Producto.Nombre</td>
+                                                                            <td class="align-middle">@item.Cantidad</td>
+                                                                            <td class="align-middle">@(item.Producto.CostoUnidad.ToString().Replace(",", "."))</td>
+                                                                            <td class="align-middle"><strong>$@(item.SubTotal.ToString().Replace(",", "."))</strong></td>
+                                                                            <td class="align-middle pe-4">
+                                                                                <div class="d-flex justify-content-center gap-2">
+                                                                                    <button class="btn btn-danger btn-sm d-flex align-items-center text-white px-3" @onclick="(() => CancelarProducto(item))">
+                                                                                        <i class="bi bi-x me-2"></i>
+                                                                                        <span>Cancelar</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        rowIndex++;
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-12 col-lg-3 d-flex justify-content-start align-items-center">
+                                                    <p><strong>Total: $</strong>@(detallesPedido.Select(x => x.SubTotal).Sum().ToString().Replace(",", "."))</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-dark fs-5" style="border-radius: 20px;">
+                                                <i class="bi bi-check2-circle"></i> Aceptar
+                                            </button>
+                                            <button type="button" class="btn btn-light fs-5" style="border-radius: 20px;" data-bs-dismiss="modal">
+                                                <i class="bi bi-arrow-left-square"></i> Cancelar
+                                            </button>
+                                        </div>
+                                    </EditForm>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal de selección de productos -->
+                    <div class="modal fade" id="modalProductos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalDocumento" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
+                            <div class="modal-content shadow-lg border-0">
+                                <div class="modal-header text-white" style="background-color: #2D3250;">
+                                    <h5 class="modal-title">
+                                        <strong>Productos</strong>
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" @onclick='() => Volver("modalProductos", "modalPedido")' aria-label="Close">
+                                    </button>
+                                </div>
+                                <div class="modal-body" >
+                                    <!-- Barra de busqueda -->
+                                    <div class="row w-100 mx-0 mb-3">
+                                        <div class="col-12 mb-3 mb-lg-0">
+                                            <div class="d-flex align-items-center">
+                                                <div class="input-group w-100">
+                                                    <InputText class="busqueda form-control" style="background-color: #9FA5C9; color:white;" placeholder="Buscar por Clave o Nombre" @bind-Value="textoBusquedaProductos" @oninput="FiltrarProductos" />
+                                                    <button class="busqueda btn btn-outline-secondary ml-2" type="button" @onclick="LimpiarFiltroProductos">
+                                                        <i class="bi bi-pencil"></i> Limpiar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Tabla Productos -->
+                                    <div class="col-12">
+                                        @if (productos?.Count() == 0 || productos == null)
+                                        {
+                                            <div class="alert alert-primary d-flex align-items-center justify-content-center" role="alert">
+                                                <div>
+                                                    <i class="bi bi-database-fill-x me-2"></i>
+                                                    No se cuenta con productos registrados.
+                                                </div>
+                                            </div>
+                                        }
+                                        else if (productosFiltrados?.Count() == 0 || productosFiltrados == null)
+                                        {
+                                            <div class="alert alert-info d-flex align-items-center justify-content-center" role="alert">
+                                                <div>
+                                                    <i class="bi bi-database-fill-x me-2"></i>
+                                                    No se encontraron coincidencias.
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="row mx-0">
+                                                <div class="table-responsive rounded-3 shadow" style="max-height: 800px;">
+                                                    <table class="table table-hover mb-0">
+                                                        <thead class="sticky-top" style="background: linear-gradient(135deg, #2D3250 0%, #424769 100%)">
+                                                            <tr class="text-center">
+                                                                <th class="align-middle py-3 text-black fw-semibold ps-4">Clave de Producto</th>
+                                                                <th class="align-middle py-3 text-black fw-semibold">Nombre</th>
+                                                                <th class="align-middle py-3 text-black fw-semibold">Número de Existencias</th>
+                                                                <th class="align-middle py-3 text-black fw-semibold">Costo por Unidad</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @{
+                                                                int rowIndex = 0;
+                                                                foreach (var item in productosFiltrados!)
+                                                                {
+                                                                    string rowClass = rowIndex % 2 == 0 ? "bg-light" : "bg-white";
+                                                                    <tr class="text-center @rowClass border-bottom border-secondary filaTabla" @onclick="() => SeleccionProducto(item)">
+                                                                        <td class="align-middle">@item.Clave</td>
+                                                                        <td class="text-start align-middle ps-4">@item.Nombre</td>
+                                                                        <td class="align-middle">@item.Existencias</td>
+                                                                        <td class="align-middle">@(item.CostoUnidad.ToString().Replace(",", "."))</td>
+                                                                    </tr>
+                                                                    rowIndex++;
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info text-white fs-5" style="border-radius: 20px;" @onclick='() => Volver("modalProductos", "modalPedido")'>
+                                        <i class="bi bi-arrow-left-square"></i> Volver
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (accesoModulo == 2)
+            {
+                <p class="alert alert-danger">
+                    Actualmente este módulo se encuentra deshabilitado o su rol de usuario no tiene el acceso necesario.
+                </p>
+            }
+        }
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    //Funciones JS.
+    [Inject] IJSRuntime JS { get; set; }
+    //Acceso a el módulo.
+    int accesoModulo = 0;
+    List<RegistroPedidosDTO>? pedidos = new List<RegistroPedidosDTO>();
+    List<RegistroPedidosDTO>? pedidosFiltrados = new List<RegistroPedidosDTO>();
+    RegistroPedidosDTO? registrosPedido = new RegistroPedidosDTO();
+    PedidoDTO? pedido = new PedidoDTO();
+    List<ProductoDTO>? productos = new List<ProductoDTO>();
+    List<ProductoDTO>? productosFiltrados = new List<ProductoDTO>();
+    List<DetallePedidoDTO>? detallesPedido = new List<DetallePedidoDTO>();
+
+    //Barra de busqueda
+    string textoBusqueda = string.Empty;
+    string textoBusquedaProductos = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var autenticacionExt = (AutenticacionExtension)autenticacionProvider; //Crear variable para autenticación.
+            var sesion = await autenticacionExt.GetAuthenticationStateAsync(); //Obtener el estado de la autenticación actual.
+
+            if (sesion.User.Identity!.IsAuthenticated) //Si el usuario está autenticado.
+            {
+                var tokenValido = await accesoService.ValidarToken(sesion.User.FindFirst("Token")!.Value.ToString()); // Revisar si el token es válido.
+
+                if (tokenValido != null && tokenValido.Equals("Token válido")) //Si el token es válido.
+                {
+                    var acceso = await permisoModulosService.ConsultarModulosUsuario(Convert.ToInt32(sesion.User.FindFirst(ClaimTypes.NameIdentifier)?.Value)); //Consulta de módulos.
+                    if (acceso.Find(x => x.ModuloSistema!.Equals("RealizarPedidos-Vendedores"))!.Acceso!.Equals("Permitido")) //Si el usuario tiene acceso al módulo.
+                    {
+                        accesoModulo = 1;
+
+                        //Extraer a los pedidos y productos.
+                        pedidos = await pedidosService.HistorialPedidosVendedor(Convert.ToInt32(sesion.User.FindFirst(ClaimTypes.NameIdentifier)?.Value));
+                        pedidosFiltrados = pedidos;
+                        productos = await productoService.Consultar();
+                        productosFiltrados = productos;
+                    }
+                    else
+                    {
+                        accesoModulo = 2;
+                    }
+                }
+                else //Si no es válido mostrar mensaje de error.
+                {
+                    await swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Error",
+                        Text = tokenValido,
+                        Icon = SweetAlertIcon.Error
+                    });
+                    //Cerrar sesión y redirigir a logín.
+                    await autenticacionExt.ActualizarEstadoAutenticacion(null);
+                    navegacion.NavigateTo("/");
+                }
+            }
+            else
+            {
+                accesoModulo = 2;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al cargar la página, detalles: " + ex);
+            //Cerrar sesión y redirigir a login
+            var autenticacionExt = (AutenticacionExtension)autenticacionProvider;
+            await autenticacionExt.ActualizarEstadoAutenticacion(null);
+            navegacion.NavigateTo("/", true);
+        }
+    }
+
+    #region "Seleccionar y administrar pedidos"
+    private async void SeleccionarPedido(RegistroPedidosDTO registroPedidoSeleccionado)
+    {
+        //Validar cuando el usuario seleccione editar al usuario.
+        registrosPedido = new RegistroPedidosDTO
+        {
+            Pedido = registroPedidoSeleccionado.Pedido,
+            Detalles = registroPedidoSeleccionado.Detalles
+        };
+        StateHasChanged();
+        await JS.InvokeVoidAsync("abrirModal", "modalDetalles");
+    }
+    private void Filtrar(ChangeEventArgs e)
+    {
+        textoBusqueda = e.Value?.ToString() ?? "";
+        if (string.IsNullOrWhiteSpace(textoBusqueda))
+        {
+            pedidosFiltrados = pedidos;
+        }
+        else
+        {
+            pedidosFiltrados = pedidos?.Where(v =>
+                v.Pedido.FechaHora.ToString("dd/MM/yyyy HH:mm").Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase) ||
+                v.Pedido.Vendedor.Nombre.Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase) ||
+                v.Pedido.Cliente.Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+        }
+    }
+    private void LimpiarFiltro()
+    {
+        textoBusqueda = string.Empty;
+        pedidosFiltrados = pedidos;
+    }
+    private async void NuevoPedido()
+    {
+        pedido = new PedidoDTO();
+        detallesPedido = new List<DetallePedidoDTO>();
+        await JS.InvokeVoidAsync("abrirModal", "modalPedido");
+    }
+    private void FiltrarProductos(ChangeEventArgs e)
+    {
+        textoBusqueda = e.Value?.ToString() ?? "";
+        if (string.IsNullOrWhiteSpace(textoBusqueda))
+        {
+            productosFiltrados = productos;
+        }
+        else
+        {
+            productosFiltrados = productos?.Where(v =>
+                v.Nombre.Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase) ||
+                v.Clave.Contains(textoBusqueda, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+        }
+    }
+    private void LimpiarFiltroProductos()
+    {
+        textoBusqueda = string.Empty;
+        productosFiltrados = productos;
+    }
+    private async Task SeleccionProducto(ProductoDTO productoSeleccionado)
+    {
+        //Ingreso de unidades.
+        var resultado = await swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "¿Cuántas unidades?",
+            Text = $"¿Cuántas unidades de \"{productoSeleccionado.Nombre}\" deseas tomar?",
+            Icon = SweetAlertIcon.Question,
+            Input = SweetAlertInputType.Number,
+            InputAttributes = new Dictionary<string, string>
+            {
+                ["min"] = "1",
+                ["step"] = "1",
+                ["placeholder"] = "Ingresa un número"
+            },
+            ShowCancelButton = true,
+            ConfirmButtonText = "Aceptar",
+            CancelButtonText = "Cancelar"
+        });
+
+        if (resultado.IsConfirmed && int.TryParse(resultado.Value, out int unidades) && unidades > 0)
+        {
+            if (unidades > productoSeleccionado.Existencias)
+            {
+                await swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Atención!",
+                    Text = $"Estan intentando tomar mas productos de los existentes, tienes que escoger una cantidad menor o igual a {productoSeleccionado.Existencias}",
+                    Icon = SweetAlertIcon.Error
+                });
+            }
+            else
+            {
+                var existe = detallesPedido.Where(x => x.FKClaveProducto == productoSeleccionado.Clave).FirstOrDefault();
+                //Si no existe el producto ya.
+                if (existe is null)
+                {
+                    detallesPedido?.Add(new DetallePedidoDTO
+                    {
+                        FkIdPedido = 0,
+                        FKClaveProducto = productoSeleccionado.Clave,
+                        Cantidad = unidades,
+                        SubTotal = unidades * productoSeleccionado.CostoUnidad,
+                        Producto = new ProductoDTO
+                        {
+                            Clave = productoSeleccionado.Clave,
+                            Nombre = productoSeleccionado.Nombre,
+                            Existencias = productoSeleccionado.Existencias,
+                            CostoUnidad = productoSeleccionado.CostoUnidad
+                        }
+                    });
+                    var existencias = productos.Where(x => x.Clave == productoSeleccionado.Clave).Select(x => x.Existencias).FirstOrDefault();
+                    var total = existencias - unidades;
+                    productos.First(x => x.Clave == productoSeleccionado.Clave).Existencias = total;
+                    productosFiltrados = productos;
+                    StateHasChanged();
+                    await JS.InvokeVoidAsync("minimizarModal", "modalProductos");
+                    await JS.InvokeVoidAsync("abrirModal", "modalPedido");
+                }
+                //Si ya existe solo sumamos unidades.
+                else
+                {
+                    //Existencias de el registrio para el guardado del pedido.
+                    var existenciasPedido = detallesPedido.Where(x => x.FKClaveProducto == productoSeleccionado.Clave).Select(x => x.Cantidad).FirstOrDefault();
+                    var totalPedido = existenciasPedido + unidades;
+                    detallesPedido.First(x => x.FKClaveProducto == productoSeleccionado.Clave).Cantidad = totalPedido;
+                    //Existencias de productos.
+                    var existencias = productos.Where(x => x.Clave == productoSeleccionado.Clave).Select(x => x.Existencias).FirstOrDefault();
+                    var total = existencias - unidades;
+                    productos.First(x => x.Clave == productoSeleccionado.Clave).Existencias = total;
+                    productosFiltrados = productos;
+                    StateHasChanged();
+                    await JS.InvokeVoidAsync("minimizarModal", "modalProductos");
+                    await JS.InvokeVoidAsync("abrirModal", "modalPedido");
+                }
+            }
+        }
+        else if (resultado.IsConfirmed)
+        {
+            await swal.FireAsync("Error", "Debes ingresar un número válido (>= 1).", SweetAlertIcon.Error);
+        }
+    }
+    private async void CancelarProducto(DetallePedidoDTO productoSeleccionado)
+    {
+        detallesPedido.RemoveAll(x => x.FKClaveProducto == productoSeleccionado.FKClaveProducto);
+        var existencias = productos.Where(x => x.Clave == productoSeleccionado.FKClaveProducto).Select(x => x.Existencias).FirstOrDefault();
+        var total = existencias + productoSeleccionado.Cantidad;
+        productos.First(x => x.Clave == productoSeleccionado.FKClaveProducto).Existencias = total;
+        productosFiltrados = productos;
+        StateHasChanged();
+    }
+    private async Task Volver(string idCerrar, string idabrir)
+    {
+        await JS.InvokeVoidAsync("minimizarModal", idCerrar);
+        await JS.InvokeVoidAsync("abrirModal", idabrir);
+    }
+    private async Task GuardarPedido()
+    {
+        var autenticacionExt = (AutenticacionExtension)autenticacionProvider; //Crear variable para la autentificación.
+        var sesion = await autenticacionExt.GetAuthenticationStateAsync();
+        var tokenValido = await accesoService.ValidarToken(sesion.User.FindFirst("Token")!.Value.ToString()); //Revisar si el token es valido.
+
+        if (tokenValido != null && tokenValido.Equals("Token válido"))
+        {
+            try
+            {
+                if (detallesPedido?.Count()!=0)
+                {
+                    var resultado = await swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "Confirmación",
+                        Text = $"¿Estás seguro de que deseas realizar este pedido?",
+                        Icon = SweetAlertIcon.Question,
+                        ShowCancelButton = true,
+                        ConfirmButtonText = "Sí",
+                        CancelButtonText = "No"
+                    });
+                    if (resultado.IsConfirmed)
+                    {
+                        //Fecha y hora.
+                        var zonaHoraria = TimeZoneInfo.FindSystemTimeZoneById("America/Mexico_City");
+                        var horario = TimeZoneInfo.ConvertTime(DateTime.UtcNow, zonaHoraria);
+
+                        //Generando el formato para el envio de la petición.
+                        RegistroPedidosDTO pedidosDTO = new RegistroPedidosDTO
+                        {
+                            Pedido = new PedidoDTO
+                            {
+                                Id = 0,
+                                FechaHora = horario,
+                                Cliente = pedido.Cliente,
+                                FkIdVendedor = Convert.ToInt32(sesion.User.FindFirst(ClaimTypes.NameIdentifier)?.Value)
+                            },
+                            Detalles = detallesPedido
+                        };
+
+                        //Petición.
+                        var respuesta = await pedidosService.Guardar(pedidosDTO);
+                        if (respuesta.EsCorrecto)
+                        {
+                            //Extraer a los pedidos y productos.
+                            pedidos = respuesta.Valor;
+                            pedidosFiltrados = pedidos;
+                            productos = await productoService.Consultar();
+                            productosFiltrados = productos;
+                            StateHasChanged();
+
+                            await swal.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "¡Éxito!",
+                                Text = $"Pedido del cliente {pedidosDTO.Pedido.Cliente} ha sidó guardado correctamente.",
+                                Icon = SweetAlertIcon.Success
+                            });
+                            StateHasChanged();
+                            await JS.InvokeVoidAsync("minimizarModal", "modalPedido");
+                        }
+                        else
+                        {
+                            await swal.FireAsync(new SweetAlertOptions
+                            {
+                                Title = "¡Error!",
+                                Text = respuesta.Mensaje,
+                                Icon = SweetAlertIcon.Error
+                            });
+                        }
+                    }
+                }
+                else
+                {
+                    await swal.FireAsync(new SweetAlertOptions
+                    {
+                        Title = "¡Atención!",
+                        Text = $"Es necesario que como mínimo selecciones un producto para realizar el pedido.",
+                        Icon = SweetAlertIcon.Info
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                await swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Error!",
+                    Text = $"Ocurrio un error al guardar el pedido, intenta nuevamente.",
+                    Icon = SweetAlertIcon.Error
+                });
+            }
+        }
+        else
+        {
+            await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "Error",
+                Text = tokenValido,
+                Icon = SweetAlertIcon.Error
+            });
+            //Cerrar sesión y redirigir a logín.
+            await autenticacionExt.ActualizarEstadoAutenticacion(null);
+        }
+    }
+    #endregion
+}

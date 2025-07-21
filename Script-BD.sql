@@ -27,7 +27,7 @@ CREATE TABLE PermisoModuloUsuario(
 --Para la administración del negocio.
 CREATE TABLE Producto
 (
-    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Clave NVARCHAR(50) PRIMARY KEY,
     Nombre NVARCHAR(100) NOT NULL,
     Existencias INT NOT NULL DEFAULT 0,
 	CostoUnidad DECIMAL(18,2) NOT NULL,
@@ -43,10 +43,10 @@ CREATE TABLE Pedido
 CREATE TABLE DetallePedido
 (
     FkIdPedido INT NOT NULL,
-    FkIdProducto INT NOT NULL,
+    FkClaveProducto NVARCHAR(50) NOT NULL,
     Cantidad INT NOT NULL CHECK (Cantidad > 0),
     SubTotal DECIMAL(18,2) NOT NULL CHECK (SubTotal >= 0),
-    CONSTRAINT PKDetallePedido PRIMARY KEY (FkIdPedido, FkIdProducto),
+    CONSTRAINT PKDetallePedido PRIMARY KEY (FkIdPedido, FkClaveProducto),
     CONSTRAINT FKDetallePedido_Pedido FOREIGN KEY (FkIdPedido) REFERENCES Pedido(Id),
-    CONSTRAINT FKDetallePedido_Producto FOREIGN KEY (FkIdProducto) REFERENCES Producto(Id)
+    CONSTRAINT FKDetallePedido_Producto FOREIGN KEY (FkClaveProducto) REFERENCES Producto(Clave)
 );

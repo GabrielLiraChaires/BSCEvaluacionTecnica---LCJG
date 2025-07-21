@@ -40,6 +40,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5pY2lvU2VzaW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/gabri/source/repos/BSCEvaluacionTecnica/src/BSCEvaluacionTecnica.Client/Pages/PersonalAdministrativo/Inicio.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyc29uYWxBZG1pbmlzdHJhdGl2b1xJbmljaW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/gabri/source/repos/BSCEvaluacionTecnica/src/BSCEvaluacionTecnica.Client/Pages/PersonalAdministrativo/Pedidos.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyc29uYWxBZG1pbmlzdHJhdGl2b1xQZWRpZG9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/gabri/source/repos/BSCEvaluacionTecnica/src/BSCEvaluacionTecnica.Client/Pages/PersonalAdministrativo/Productos.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyc29uYWxBZG1pbmlzdHJhdGl2b1xQcm9kdWN0b3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/gabri/source/repos/BSCEvaluacionTecnica/src/BSCEvaluacionTecnica.Client/Pages/Vendedores/Inicio.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVuZGVkb3Jlc1xJbmljaW8ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/gabri/source/repos/BSCEvaluacionTecnica/src/BSCEvaluacionTecnica.Client/Pages/Vendedores/Pedidos.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmVuZGVkb3Jlc1xQZWRpZG9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/gabri/source/repos/BSCEvaluacionTecnica/src/BSCEvaluacionTecnica.Client/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

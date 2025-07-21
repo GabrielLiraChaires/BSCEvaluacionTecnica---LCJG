@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AD27340E-8494-48F0-9046-753D9F8C6B6E}|src\\BSCEvaluacionTecnica.Client\\BSCEvaluacionTecnica.Client.csproj|c:\\users\\gabri\\source\\repos\\bscevaluaciontecnica\\src\\bscevaluaciontecnica.client\\pages\\administrador\\administrar_usuarios.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{AD27340E-8494-48F0-9046-753D9F8C6B6E}|src\\BSCEvaluacionTecnica.Client\\BSCEvaluacionTecnica.Client.csproj|solutionrelative:src\\bscevaluaciontecnica.client\\pages\\administrador\\administrar_usuarios.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{25106532-EC98-433C-9A6C-A9C8548C670F}|src\\BSCEvaluacionTecnica.Server\\BSCEvaluacionTecnica.Server.csproj|c:\\users\\gabri\\source\\repos\\bscevaluaciontecnica\\src\\bscevaluaciontecnica.server\\controllers\\pedidoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25106532-EC98-433C-9A6C-A9C8548C670F}|src\\BSCEvaluacionTecnica.Server\\BSCEvaluacionTecnica.Server.csproj|solutionrelative:src\\bscevaluaciontecnica.server\\controllers\\pedidoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25106532-EC98-433C-9A6C-A9C8548C670F}|src\\BSCEvaluacionTecnica.Server\\BSCEvaluacionTecnica.Server.csproj|c:\\users\\gabri\\source\\repos\\bscevaluaciontecnica\\src\\bscevaluaciontecnica.server\\controllers\\productocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25106532-EC98-433C-9A6C-A9C8548C670F}|src\\BSCEvaluacionTecnica.Server\\BSCEvaluacionTecnica.Server.csproj|solutionrelative:src\\bscevaluaciontecnica.server\\controllers\\productocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5CA65AB0-CC90-4B54-9166-F0DA4FD58A5A}|src\\BSCEvaluacionTecnica.DataAccess\\BSCEvaluacionTecnica.DataAccess.csproj|c:\\users\\gabri\\source\\repos\\bscevaluaciontecnica\\src\\bscevaluaciontecnica.dataaccess\\entities\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5CA65AB0-CC90-4B54-9166-F0DA4FD58A5A}|src\\BSCEvaluacionTecnica.DataAccess\\BSCEvaluacionTecnica.DataAccess.csproj|solutionrelative:src\\bscevaluaciontecnica.dataaccess\\entities\\producto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1427,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -23,14 +31,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Administrar_Usuarios.razor",
-              "DocumentMoniker": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Client\\Pages\\Administrador\\Administrar_Usuarios.razor",
-              "RelativeDocumentMoniker": "src\\BSCEvaluacionTecnica.Client\\Pages\\Administrador\\Administrar_Usuarios.razor",
-              "ToolTip": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Client\\Pages\\Administrador\\Administrar_Usuarios.razor",
-              "RelativeToolTip": "src\\BSCEvaluacionTecnica.Client\\Pages\\Administrador\\Administrar_Usuarios.razor",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-07-20T08:00:18.647Z",
+              "Title": "PedidosController.cs",
+              "DocumentMoniker": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Server\\Controllers\\PedidosController.cs",
+              "RelativeDocumentMoniker": "src\\BSCEvaluacionTecnica.Server\\Controllers\\PedidosController.cs",
+              "ToolTip": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Server\\Controllers\\PedidosController.cs",
+              "RelativeToolTip": "src\\BSCEvaluacionTecnica.Server\\Controllers\\PedidosController.cs",
+              "ViewState": "AgIAAL0AAAAAAAAAAAAcwOQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-21T08:08:11.919Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ProductoController.cs",
+              "DocumentMoniker": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Server\\Controllers\\ProductoController.cs",
+              "RelativeDocumentMoniker": "src\\BSCEvaluacionTecnica.Server\\Controllers\\ProductoController.cs",
+              "ToolTip": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Server\\Controllers\\ProductoController.cs",
+              "RelativeToolTip": "src\\BSCEvaluacionTecnica.Server\\Controllers\\ProductoController.cs",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAcwJMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-21T08:07:37.954Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Producto.cs",
+              "DocumentMoniker": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.DataAccess\\Entities\\Producto.cs",
+              "RelativeDocumentMoniker": "src\\BSCEvaluacionTecnica.DataAccess\\Entities\\Producto.cs",
+              "ToolTip": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.DataAccess\\Entities\\Producto.cs",
+              "RelativeToolTip": "src\\BSCEvaluacionTecnica.DataAccess\\Entities\\Producto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-21T08:07:32.054Z",
               "EditorCaption": ""
             }
           ]

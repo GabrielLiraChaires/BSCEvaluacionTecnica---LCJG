@@ -34,15 +34,19 @@ public partial class BSCEvaluacionTecnicaContext : DbContext
     {
         modelBuilder.Entity<DetallePedido>(entity =>
         {
-            entity.HasKey(e => new { e.FkIdPedido, e.FkIdProducto }).HasName("PKDetallePedido");
+            entity.HasKey(e => new { e.FkIdPedido, e.FkClaveProducto });
 
-            entity.HasOne(d => d.FkIdPedidoNavigation).WithMany(p => p.DetallePedidos)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FKDetallePedido_Pedido");
+            entity.HasOne(d => d.FkIdPedidoNavigation)
+                  .WithMany(p => p.DetallePedidos)
+                  .HasForeignKey(d => d.FkIdPedido)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FKDetallePedido_Pedido");
 
-            entity.HasOne(d => d.FkIdProductoNavigation).WithMany(p => p.DetallePedidos)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FKDetallePedido_Producto");
+            entity.HasOne(d => d.FkIdProductoNavigation)
+                  .WithMany(p => p.DetallePedidos)
+                  .HasForeignKey(d => d.FkClaveProducto)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FKDetallePedido_Producto");
         });
 
         modelBuilder.Entity<ModuloSistema>(entity =>
@@ -76,7 +80,7 @@ public partial class BSCEvaluacionTecnicaContext : DbContext
 
         modelBuilder.Entity<Producto>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Producto__3214EC0754402FD2");
+            entity.HasKey(e => e.Clave).HasName("PK__Producto__3214EC0754402FD2");
         });
 
         modelBuilder.Entity<Usuario>(entity =>

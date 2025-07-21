@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BSCEvaluacionTecnica.Client")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0f281c5a284cc993aa776c3c1677732331fa1cf6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e118230e8465d351c983c5980651de1670db622d")]
 [assembly: System.Reflection.AssemblyProductAttribute("BSCEvaluacionTecnica.Client")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BSCEvaluacionTecnica.Client")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
