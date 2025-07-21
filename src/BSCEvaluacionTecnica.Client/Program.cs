@@ -32,6 +32,8 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 //IPermisoModulosService.
 builder.Services.AddScoped<IPedidosService, PedidosService>();
+//IPDF.
+builder.Services.AddScoped<IPDFService, PDFService>();
 
 //SweetAlert.
 builder.Services.AddSweetAlert2();

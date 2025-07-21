@@ -45,7 +45,13 @@
             const inst = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
             inst.hide();
         }
-
+        //Abrir archivo.
+        window.descargarArchivo = (nombreArchivo, base64) => {
+            const link = document.createElement("a");
+            link.href = "data:application/pdf;base64," + base64;
+            link.download = nombreArchivo;
+            link.click();
+        };
     </script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>

@@ -11,7 +11,7 @@ Aplicación web en .NET para la gestión integral de la empresa BSC. Incluye:
 
 ## 🎬 Video demostrativo
 
-[Ver demo en Google Drive](https://drive.google.com/file/d/1k98k6Rp3js20UBgO__GR6XSYFj5alSP5/view?usp=sharing)
+[Ver demo en Google Drive](https://drive.google.com/file/d/1K7zk_3Q8YdOTdytEveC_Z9-4DR7h0jze/view?usp=sharing)
 
 > **Nota:**  
 > - En el script de base de datos (en la raíz del repositorio) encontrarás todas las Vistas, Stored Procedures y Triggers.  

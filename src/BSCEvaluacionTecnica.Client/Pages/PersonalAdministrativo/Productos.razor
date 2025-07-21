@@ -6,11 +6,14 @@
 @using BSCEvaluacionTecnica.Business.Interfaces;
 @using System.Security.Claims
 @using BSCEvaluacionTecnica.Shared.DTOs;
+@using System.Text
 @inject AuthenticationStateProvider autenticacionProvider
 @inject NavigationManager navegacion
 @inject IAccesoService accesoService
 @inject IPermisoModulosService permisoModulosService
 @inject IProductoService productoService
+@inject IPDFService _pdfService
+@inject IJSRuntime _js
 @inject SweetAlertService swal
 
 @attribute [Authorize(Roles = "Personal Administrativo")]
@@ -51,17 +54,14 @@
                             <div class="d-flex align-items-center">
                                 <div class="input-group w-100">
                                     <InputText class="busqueda form-control" style="background-color: #9FA5C9; color:white;" placeholder="Buscar por Clave o Nombre" @bind-Value="textoBusqueda" @oninput="Filtrar" />
-                                    <button class="busqueda btn btn-outline-secondary ml-2" type="button" @onclick="LimpiarFiltro">
-                                        <i class="bi bi-pencil"></i> Limpiar
-                                    </button>
+                                    <button class="busqueda btn btn-outline-secondary ml-2" type="button" @onclick="LimpiarFiltro"><i class="bi bi-pencil"></i> Limpiar</button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Botón NUEVO -->
+                        <!-- Botones NUEVO y CONSULTAR EXISTENCIAS -->
                         <div class="col-12 col-lg-3 d-flex justify-content-end align-items-center">
-                            <button type="submit" class="btn btn-primary btn-sm" style="padding: 0.375rem 0.75rem; background-color: #424769; color:white; border:none; white-space:nowrap;" @onclick="NuevoProducto">
-                                <i class="bi bi-plus-circle"></i> Nuevo
-                            </button>
+                            <button type="button" class="btn btn-primary btn-sm me-2" style="padding:0.375rem 0.75rem;background-color:#424769;color:white;border:none;white-space:nowrap;" @onclick="NuevoProducto"><i class="bi bi-plus-circle"></i> Nuevo</button>
+                            <button type="button" class="btn btn-secondary btn-sm" style="padding:0.375rem 0.75rem;background-color:#6c757d;color:white;border:none;white-space:nowrap;" @onclick="GenerarPdf"><i class="bi bi-box-seam"></i> Reporte de Productos</button>
                         </div>
                     </div>
                     <div class="row w-100">
@@ -539,6 +539,117 @@
             //Cerrar sesión y redirigir a logín.
             await autenticacionExt.ActualizarEstadoAutenticacion(null);
         }
+    }
+    #endregion
+    #region "PDF"
+    private async Task GenerarPdf()
+    {
+        Console.WriteLine("Generando PDF...");
+        var margen = new double[] { 10, 10, 10, 10 };
+
+        // Construir el cuerpo de la tabla primero.
+        var filasTabla = new StringBuilder();
+
+        if (productosFiltrados == null || !productosFiltrados.Any())
+        {
+            filasTabla.AppendLine(@"<tr>
+                <td colspan=""4"" class=""no-products"">
+                    <div style=""font-size: 3rem; margin-bottom: 15px;"">!</div>
+                    <h3 style=""font-weight: 500;"">No hay productos registrados</h3>
+                    <p>El sistema no cuenta con productos en este momento</p>
+                </td>
+            </tr>");
+        }
+        else
+        {
+            foreach (var item in productosFiltrados)
+            {
+                filasTabla.AppendLine($@"
+                <tr style='border-bottom: 1px solid #dee2e6; background-color:white;'>
+                    <td class='text-center'>{item.Clave}</td>
+                    <td class='text-start'>{item.Nombre}</td>
+                    <td class='text-center'>{item.Existencias}</td>
+                    <td class='text-center'>{item.CostoUnidad.ToString().Replace(',','.')}</td>
+                </tr>");
+            }
+        }
+
+        // Ahora construir el HTML completo.
+        string filas = filasTabla.ToString();
+        string html = $@"
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta charset=""UTF-8"">
+                <style>
+                    body {{
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        color: #333;
+                    }}
+                    .table {{
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 20px 0;
+                        border-radius: 8px;
+                        overflow: hidden;
+                    }}
+                    th {{
+                        background: linear-gradient(135deg, #2D3250 0%, #424769 100%);
+                        color: white;
+                        font-weight: 600;
+                        padding: 12px;
+                        text-align: center;
+                    }}
+                    td {{
+                        padding: 10px;
+                        border-bottom: 1px solid #dee2e6;
+                        text-align: center;
+                    }}
+                    .no-products {{
+                        padding: 20px;
+                        color: #6c757d;
+                        text-align: center;
+                    }}
+                    h1 {{
+                        color: #2D3250;
+                        border-bottom: 2px solid #424769;
+                        padding-bottom: 10px;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div style=""margin: 20px;"">
+                    <h1>Reporte de Productos</h1>
+                    <div style=""border-radius: 8px; overflow: hidden; box-shadow: 0 0 10px rgba(0,0,0,0.1);"">
+                        <table class=""table"">
+                            <thead>
+                                <tr>
+                                    <th style='color:black;'><strong>Clave de Producto</strong></th>
+                                    <th style='color:black;'><strong>Nombre</strong></th>
+                                    <th style='color:black;'><strong>Número de Existencias</strong></th>
+                                    <th style='color:black;'><strong>Costo por Unidad</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filas}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style=""margin-top: 20px; color: #6c757d; text-align: center;"">
+                        <small>Generado el {DateTime.Now:dd/MM/yyyy HH:mm}</small>
+                    </div>
+                </div>
+            </body>
+        </html>";
+
+        var resultado = await _pdfService.PDF(new PDF
+        {
+            Html = html,
+            Orientacion = "Vertical",
+            Margenes = margen
+        });
+
+        await _js.InvokeVoidAsync("descargarArchivo", "reporte_productos.pdf", resultado);
     }
     #endregion
 }

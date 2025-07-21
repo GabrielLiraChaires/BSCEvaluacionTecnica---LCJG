@@ -58,6 +58,37 @@
         }
       }
     },
+    "/api/PDFs/PDF": {
+      "post": {
+        "tags": [
+          "PDFs"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PDF"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PDF"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PDF"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Pedido/Consultar": {
       "get": {
         "tags": [
@@ -423,6 +454,28 @@
           "clave": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PDF": {
+        "type": "object",
+        "properties": {
+          "html": {
+            "type": "string",
+            "nullable": true
+          },
+          "orientacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "margenes": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -177,3 +177,5 @@ C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Server
 C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Server\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Server\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Server\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Server\bin\Debug\net9.0\DinkToPdf.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.Server\bin\Debug\net9.0\libwkhtmltox.dll

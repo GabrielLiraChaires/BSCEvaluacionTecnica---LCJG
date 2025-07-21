@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BSCEvaluacionTecnica.DataAccess")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c71f2315a5b3526f521e24e13ad08a468ee41db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4dac69f25ebcf506ea918fb03083840aa948262d")]
 [assembly: System.Reflection.AssemblyProductAttribute("BSCEvaluacionTecnica.DataAccess")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BSCEvaluacionTecnica.DataAccess")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

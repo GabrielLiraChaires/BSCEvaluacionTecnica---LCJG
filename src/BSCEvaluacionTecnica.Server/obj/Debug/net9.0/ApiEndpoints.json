@@ -32,6 +32,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.PDFsController",
+    "Method": "Generar",
+    "RelativePath": "api/PDFs/PDF",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "parametros",
+        "Type": "BSCEvaluacionTecnica.Shared.DTOs.PDF",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BSCEvaluacionTecnica.Server.Controllers.PedidoController",
     "Method": "Consultar",
     "RelativePath": "api/Pedido/Consultar",

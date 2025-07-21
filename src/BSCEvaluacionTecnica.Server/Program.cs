@@ -5,8 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//PDF.
+builder.Services.AddSingleton<IConverter>(sp => new SynchronizedConverter(new PdfTools()));
 
 //Add services to the container..
 builder.Services.AddControllers();
