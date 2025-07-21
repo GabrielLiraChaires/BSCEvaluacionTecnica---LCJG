@@ -668,6 +668,7 @@
       },
       "BSCEvaluacionTecnica.DataAccess/1.0.0": {
         "dependencies": {
+          "BSCEvaluacionTecnica.Shared": "1.0.0",
           "Microsoft.EntityFrameworkCore": "9.0.7",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.7"
         },

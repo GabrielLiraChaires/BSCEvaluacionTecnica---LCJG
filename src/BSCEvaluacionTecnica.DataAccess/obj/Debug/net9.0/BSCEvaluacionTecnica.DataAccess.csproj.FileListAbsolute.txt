@@ -13,3 +13,6 @@ C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAc
 C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.pdb
 C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvaluacionTecnica.DataAccess.genruntimeconfig.cache
 C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\ref\BSCEvaluacionTecnica.DataAccess.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\bin\Debug\net9.0\BSCEvaluacionTecnica.Shared.dll
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\bin\Debug\net9.0\BSCEvaluacionTecnica.Shared.pdb
+C:\Users\gabri\source\repos\BSCEvaluacionTecnica\src\BSCEvaluacionTecnica.DataAccess\obj\Debug\net9.0\BSCEvalu.59B7D0A1.Up2Date

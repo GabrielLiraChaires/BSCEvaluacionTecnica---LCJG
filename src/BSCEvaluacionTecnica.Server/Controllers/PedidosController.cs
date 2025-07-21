@@ -81,7 +81,9 @@ namespace BSCEvaluacionTecnica.Server.Controllers
             var responseAPI = new ResponseAPI<List<RegistroPedidosDTO>>();
             try
             {
-                var listaPedidos = await _context.Pedidos.Where(x=>x.FkIdVendedor==vendedor).Select(x => new RegistroPedidosDTO
+                //Consulta usando entity framework.
+                #region
+                /*var listaPedidos = await _context.Pedidos.Where(x=>x.FkIdVendedor==vendedor).Select(x => new RegistroPedidosDTO
                 {
                     Pedido = new PedidoDTO
                     {
@@ -110,7 +112,40 @@ namespace BSCEvaluacionTecnica.Server.Controllers
                             CostoUnidad = y.FkIdProductoNavigation.CostoUnidad
                         }
                     }).ToList()
-                }).ToListAsync();
+                }).ToListAsync();*/
+                #endregion
+                //Consulta haciendo uso de la vista.
+                var filas = await _context.RegistroPedidos.Where(r => r.VendedorId == vendedor).ToListAsync();
+                var listaPedidos = filas.GroupBy(r => new { r.PedidoId, r.FechaHora, r.Cliente, r.VendedorId, r.VendedorNombre, r.VendedorCorreo, r.VendedorRol }).Select(g => new RegistroPedidosDTO
+                {
+                    Pedido = new PedidoDTO
+                    {
+                        Id = g.Key.PedidoId,
+                        FechaHora = g.Key.FechaHora,
+                        Cliente = g.Key.Cliente,
+                        Vendedor = new UsuarioDTO
+                        {
+                            Id = g.Key.VendedorId,
+                            Nombre = g.Key.VendedorNombre,
+                            Correo = g.Key.VendedorCorreo,
+                            Rol = g.Key.VendedorRol
+                        }
+                    },
+                    Detalles = g.Select(item => new DetallePedidoDTO
+                    {
+                        FkIdPedido = item.PedidoId,
+                        FKClaveProducto = item.ProductoClave,
+                        Cantidad = item.Cantidad,
+                        SubTotal = item.SubTotal,
+                        Producto = new ProductoDTO
+                        {
+                            Clave = item.ProductoClave,
+                            Nombre = item.ProductoNombre,
+                            Existencias = item.ProductoExistencias,
+                            CostoUnidad = item.ProductoCostoUnidad
+                        }
+                    }).ToList()
+                }).ToList();
 
                 responseAPI.EsCorrecto = true;
                 responseAPI.Valor = listaPedidos;
@@ -157,7 +192,9 @@ namespace BSCEvaluacionTecnica.Server.Controllers
                     await _context.DetallePedidos.AddRangeAsync(listaDetallesGuardar);
                     await _context.SaveChangesAsync();
 
-                    //Actualizando las existencias de los productos.
+                    //Actualizando las existencias de los productos, esto fue sustituido por el uso de un trigger.
+                    #region
+                    /*
                     // 1. Preparando un diccionario para acceso rápido: IdProducto → UnidadesSalida.
                     var salidas = listaDetallesGuardar.GroupBy(d => d.FkClaveProducto).ToDictionary
                     (
@@ -174,7 +211,8 @@ namespace BSCEvaluacionTecnica.Server.Controllers
                         var unidadesSalida = salidas[producto.Clave];
                         producto.Existencias = Math.Max(0, producto.Existencias - unidadesSalida);
                     });
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();*/
+                    #endregion
 
                     //Confirmando la transacción.
                     await transaccion.CommitAsync();

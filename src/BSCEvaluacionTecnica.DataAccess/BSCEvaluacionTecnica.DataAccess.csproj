@@ -20,4 +20,8 @@
     <Folder Include="Context\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BSCEvaluacionTecnica.Shared\BSCEvaluacionTecnica.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

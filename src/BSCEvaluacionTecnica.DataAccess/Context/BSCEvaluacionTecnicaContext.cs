@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BSCEvaluacionTecnica.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using BSCEvaluacionTecnica.Shared.DTOs;
 
 namespace BSCEvaluacionTecnica.DataAccess.Context;
 
@@ -27,6 +28,8 @@ public partial class BSCEvaluacionTecnicaContext : DbContext
     public virtual DbSet<Producto> Productos { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
+    
+    public DbSet<RegistroPedidoDTO> RegistroPedidos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){}
 
@@ -86,6 +89,13 @@ public partial class BSCEvaluacionTecnicaContext : DbContext
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Usuario__3214EC07F810EF89");
+        });
+
+        //Vista.
+        modelBuilder.Entity<RegistroPedidoDTO>(eb =>
+        {
+            eb.HasNoKey();
+            eb.ToView("vw_RegistroPedidos");
         });
 
         OnModelCreatingPartial(modelBuilder);

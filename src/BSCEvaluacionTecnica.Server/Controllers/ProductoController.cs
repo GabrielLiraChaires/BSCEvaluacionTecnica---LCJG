@@ -4,6 +4,7 @@ using BSCEvaluacionTecnica.Server.Custom;
 using BSCEvaluacionTecnica.Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -61,8 +62,9 @@ namespace BSCEvaluacionTecnica.Server.Controllers
             {
                 try
                 {
-                    //Guardando usuario.
-                    var producto = new Producto
+                    //Guardando producto usando entity framework.
+                    #region 
+                    /*var producto = new Producto
                     {
                         Clave = productoDTO.Clave!,
                         Nombre = productoDTO.Nombre!,
@@ -82,6 +84,26 @@ namespace BSCEvaluacionTecnica.Server.Controllers
                         Nombre = producto.Nombre!,
                         Existencias = producto.Existencias,
                         CostoUnidad = producto.CostoUnidad
+                    };
+                    responseAPI.Mensaje = "Producto guardado exitosamente.";
+                    return StatusCode(StatusCodes.Status201Created, responseAPI);*/
+                    #endregion
+
+                    //Guardando producto usando procedimientos almacenados.
+                    //Llamando al procedimiento almacenado.
+                    var resultado = await _context.Productos.FromSqlInterpolated($"""EXEC sp_GuardarProducto @Clave = {productoDTO.Clave}, @Nombre = {productoDTO.Nombre}, @Existencias = {productoDTO.Existencias}, @CostoUnidad = {productoDTO.CostoUnidad}""").ToListAsync();
+                    //Debe devolver exactamente el registro que acaba de insertar.
+                    var guardado = resultado.First();
+                    //Confirmando la transacción.
+                    await transaccion.CommitAsync();
+                    //Enviamos respuesta.
+                    responseAPI.EsCorrecto = true;
+                    responseAPI.Valor = new ProductoDTO
+                    {
+                        Clave = guardado.Clave,
+                        Nombre = guardado.Nombre,
+                        Existencias = guardado.Existencias,
+                        CostoUnidad = guardado.CostoUnidad
                     };
                     responseAPI.Mensaje = "Producto guardado exitosamente.";
                     return StatusCode(StatusCodes.Status201Created, responseAPI);
@@ -108,8 +130,9 @@ namespace BSCEvaluacionTecnica.Server.Controllers
             {
                 try
                 {
-                    //Actualizando usuario.
-                    var existencia = await _context.Productos.Where(x => x.Clave == productoDTO.Clave).FirstOrDefaultAsync();
+                    //Actualizando usuario usando entity framework.
+                    #region
+                    /*var existencia = await _context.Productos.Where(x => x.Clave == productoDTO.Clave).FirstOrDefaultAsync();
 
                     existencia.Nombre = productoDTO.Nombre!;
                     existencia.Existencias = productoDTO.Existencias;
@@ -128,6 +151,25 @@ namespace BSCEvaluacionTecnica.Server.Controllers
                         Nombre = existencia.Nombre!,
                         Existencias = existencia.Existencias,
                         CostoUnidad=existencia.CostoUnidad
+                    };
+                    responseAPI.Mensaje = "Producto actualizado exitosamente.";
+                    return StatusCode(StatusCodes.Status201Created, responseAPI);*/
+                    #endregion
+                    //Actualizando producto usando procedimientos almacenados.
+                    //Llamando al procedimiento almacenado.
+                    var resultado = await _context.Productos.FromSqlInterpolated($"""EXEC sp_ActualizarProducto @Clave = {productoDTO.Clave}, @Nombre = {productoDTO.Nombre}, @Existencias = {productoDTO.Existencias}, @CostoUnidad = {productoDTO.CostoUnidad}""").ToListAsync();
+                    //Debe devolver exactamente el registro que acaba de actualizar.
+                    var actualizado = resultado.First();
+                    //Confirmando la transacción.
+                    await transaccion.CommitAsync();
+                    //Enviamos respuesta.
+                    responseAPI.EsCorrecto = true;
+                    responseAPI.Valor = new ProductoDTO
+                    {
+                        Clave = actualizado.Clave,
+                        Nombre = actualizado.Nombre,
+                        Existencias = actualizado.Existencias,
+                        CostoUnidad = actualizado.CostoUnidad
                     };
                     responseAPI.Mensaje = "Producto actualizado exitosamente.";
                     return StatusCode(StatusCodes.Status201Created, responseAPI);

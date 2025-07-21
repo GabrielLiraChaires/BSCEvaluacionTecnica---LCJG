@@ -105,7 +105,11 @@
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Shared\\BSCEvaluacionTecnica.Shared.csproj": {
+                "projectPath": "C:\\Users\\gabri\\source\\repos\\BSCEvaluacionTecnica\\src\\BSCEvaluacionTecnica.Shared\\BSCEvaluacionTecnica.Shared.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

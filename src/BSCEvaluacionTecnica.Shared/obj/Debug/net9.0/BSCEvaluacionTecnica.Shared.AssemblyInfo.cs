@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BSCEvaluacionTecnica.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e118230e8465d351c983c5980651de1670db622d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c71f2315a5b3526f521e24e13ad08a468ee41db")]
 [assembly: System.Reflection.AssemblyProductAttribute("BSCEvaluacionTecnica.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BSCEvaluacionTecnica.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

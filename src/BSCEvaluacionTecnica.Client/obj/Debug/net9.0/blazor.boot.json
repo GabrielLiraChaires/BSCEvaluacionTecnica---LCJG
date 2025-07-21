@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "BSCEvaluacionTecnica.Client",
   "resources": {
-    "hash": "sha256-kE3KSdWHWBByWD3TQGfrt06+zeh0XJ2CtUwIELaYA7c=",
+    "hash": "sha256-DmbG3eX111PGFPH+yo/XzWU10ADNc53cDCZaW4hzbc4=",
     "fingerprinting": {
       "Azure.Core.92q6rqqhly.wasm": "Azure.Core.wasm",
       "Azure.Identity.b6ekoqlu3w.wasm": "Azure.Identity.wasm",
@@ -235,14 +235,14 @@
       "icudt_CJK.tjcz0u77k5.dat": "icudt_CJK.dat",
       "icudt_EFIGS.tptq2av103.dat": "icudt_EFIGS.dat",
       "icudt_no_CJK.lfu7j35m59.dat": "icudt_no_CJK.dat",
-      "BSCEvaluacionTecnica.Business.d5esfwu8jz.wasm": "BSCEvaluacionTecnica.Business.wasm",
-      "BSCEvaluacionTecnica.DataAccess.vevuhr7z67.wasm": "BSCEvaluacionTecnica.DataAccess.wasm",
-      "BSCEvaluacionTecnica.Shared.2qchqubwbc.wasm": "BSCEvaluacionTecnica.Shared.wasm",
-      "BSCEvaluacionTecnica.Business.u9rz39jl3s.pdb": "BSCEvaluacionTecnica.Business.pdb",
-      "BSCEvaluacionTecnica.DataAccess.fu96xlm9nc.pdb": "BSCEvaluacionTecnica.DataAccess.pdb",
-      "BSCEvaluacionTecnica.Shared.mg9kslfgs1.pdb": "BSCEvaluacionTecnica.Shared.pdb",
-      "BSCEvaluacionTecnica.Client.j7yh27es3m.wasm": "BSCEvaluacionTecnica.Client.wasm",
-      "BSCEvaluacionTecnica.Client.obzrl4hejg.pdb": "BSCEvaluacionTecnica.Client.pdb"
+      "BSCEvaluacionTecnica.Business.nwdj76jep6.wasm": "BSCEvaluacionTecnica.Business.wasm",
+      "BSCEvaluacionTecnica.DataAccess.t7or0toefj.wasm": "BSCEvaluacionTecnica.DataAccess.wasm",
+      "BSCEvaluacionTecnica.Shared.ig0a57mn4p.wasm": "BSCEvaluacionTecnica.Shared.wasm",
+      "BSCEvaluacionTecnica.Business.t3wehoa5iz.pdb": "BSCEvaluacionTecnica.Business.pdb",
+      "BSCEvaluacionTecnica.DataAccess.ycosc1lo7w.pdb": "BSCEvaluacionTecnica.DataAccess.pdb",
+      "BSCEvaluacionTecnica.Shared.hppmhhcqnw.pdb": "BSCEvaluacionTecnica.Shared.pdb",
+      "BSCEvaluacionTecnica.Client.szwg4exw0j.wasm": "BSCEvaluacionTecnica.Client.wasm",
+      "BSCEvaluacionTecnica.Client.ajtmuvlqvh.pdb": "BSCEvaluacionTecnica.Client.pdb"
     },
     "jsModuleNative": {
       "dotnet.native.st0ovrfdhi.js": "sha256-MBW/zayfv+YU6mhH7y4b8NNU4D1EYd7nf9gYrFshnnY="
@@ -486,16 +486,16 @@
       "WindowsBase.pg3o6xzigg.wasm": "sha256-dz62CHynC+zqTkbMOf3vm7YAhiRA8/pIoAwuqHfBL5M=",
       "mscorlib.jl2pswegra.wasm": "sha256-mSoCIDTdCQKTipW8VmFCypW/4AopZauaYRa8LoZdHvY=",
       "netstandard.uriri6ambh.wasm": "sha256-yuH/cvPd6r8N9nfPWihyckFD7hPFP+VQtQQxEqi7HIQ=",
-      "BSCEvaluacionTecnica.Business.d5esfwu8jz.wasm": "sha256-oQXeYJwk2ARWzt9pfFIB1+k2C2gNEm0uO1vr540U1RU=",
-      "BSCEvaluacionTecnica.DataAccess.vevuhr7z67.wasm": "sha256-edi4S/GsQLGLGlmW8x4E69PFHYxn2mTFqv3PRRfG6B4=",
-      "BSCEvaluacionTecnica.Shared.2qchqubwbc.wasm": "sha256-qpwecB/fJ8JztykkGCR19DgdE+gwHKiVPk3yUvOowFs=",
-      "BSCEvaluacionTecnica.Client.j7yh27es3m.wasm": "sha256-b2W3dZyeHmFo7gPl6QiRvD2I8+OC2S8CINSOFz2Cjts="
+      "BSCEvaluacionTecnica.Business.nwdj76jep6.wasm": "sha256-2UPIOTxP1yrl3rpsiljpnGPpNSQ5LzjQ9/BPua6z03g=",
+      "BSCEvaluacionTecnica.DataAccess.t7or0toefj.wasm": "sha256-p7gb3RtSgx3ZMyrJIiT0DHEL29ek3vkunR/l5TeVMFU=",
+      "BSCEvaluacionTecnica.Shared.ig0a57mn4p.wasm": "sha256-Lh4jNm7dbq7leB2mCB4sI+iN3Zbu7bM+k5nAyV1E8hM=",
+      "BSCEvaluacionTecnica.Client.szwg4exw0j.wasm": "sha256-+GjDEcjZMUqfkjZ63VGe6Z+NjgcySM5DVrcmTOP7ZtQ="
     },
     "pdb": {
-      "BSCEvaluacionTecnica.Business.u9rz39jl3s.pdb": "sha256-0oti0RFtI8ouEMU7IF206TbP+cRX8Q0gK74eXySIMX8=",
-      "BSCEvaluacionTecnica.DataAccess.fu96xlm9nc.pdb": "sha256-qbOrjQ81FNvhvj5IPf1zX6A5+qnyk8BGHXJ92fAWj0M=",
-      "BSCEvaluacionTecnica.Shared.mg9kslfgs1.pdb": "sha256-5myhAJ+5iU1FIkmekEoQX/pmfCZp21GhJIm1zttsppk=",
-      "BSCEvaluacionTecnica.Client.obzrl4hejg.pdb": "sha256-lEBjVlXo3UNXwptzHHcFLjaOJKTUJFW4ZiXG/IhJMVA="
+      "BSCEvaluacionTecnica.Business.t3wehoa5iz.pdb": "sha256-93Q2zXrvz6/F6iZRTY187Cg1q7kSlwX1cSNtrWPPPWs=",
+      "BSCEvaluacionTecnica.DataAccess.ycosc1lo7w.pdb": "sha256-rhXUdCyUQF2I3PvuMfnvGN+jifhhzLh9PUIOHdS4wFg=",
+      "BSCEvaluacionTecnica.Shared.hppmhhcqnw.pdb": "sha256-W/9IEalcrQzV+JGxyhiFYNSZ/f4Z5hxTUcjsn7KgjO0=",
+      "BSCEvaluacionTecnica.Client.ajtmuvlqvh.pdb": "sha256-+jZj3p4Cxd7polO+JPyZsvF5o9nB4AsqEVITv13SdRA="
     }
   },
   "cacheBootResources": true,
