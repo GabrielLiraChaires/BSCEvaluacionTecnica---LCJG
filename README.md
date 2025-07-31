@@ -1,4 +1,4 @@
-# 🏢 Sistema de Administración de Negocio
+# 🏢 Sistema de Administración de Negocios
 
 Aplicación web en .NET para la gestión integral de la empresa BSC. Incluye:
 
